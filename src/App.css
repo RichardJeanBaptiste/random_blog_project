@@ -13,6 +13,13 @@
   top:0;
 }
 
+.headerItems {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  width: 15%;
+}
+
 .postList {
   position: absolute;
   top: 10%;
@@ -26,6 +33,10 @@
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
   gap: 10px;
+  width: 96%;
+  height: 93%;
+  margin-left: 3%;
+  margin-top: 2%;
 }
 
 
