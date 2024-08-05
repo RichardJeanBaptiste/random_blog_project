@@ -1,0 +1,31 @@
+#root {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.header {
+  width: 99%;
+  height: 7%;
+  border-bottom: 1px solid lightgray;
+  position:absolute;
+  top:0;
+}
+
+.postList {
+  position: absolute;
+  top: 10%;
+  left: 0.5%;
+  width: 97.5%;
+  height: 85%;
+}
+
+.postGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 10px;
+}
+
+
