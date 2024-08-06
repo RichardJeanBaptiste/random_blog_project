@@ -8,6 +8,8 @@ import IconButton  from "@mui/material/IconButton";
 import SearchIcon from '@mui/icons-material/Search';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
+import { useContext } from "react";
+import { PostContext } from "../PostContext";
 
 
 
@@ -16,14 +18,29 @@ const Header = () => {
     const theme = useTheme();
     const styles = useStyles(theme);
 
+    // eslint-disable-next-line no-unused-vars
+    const { posts, SetPosts } = useContext(PostContext);
+
+    // Open Post Modal
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    // Open Seach Modal
+    const [openSearch, setOpenSearch] = useState(false);
+    const handleOpenSearch = () => setOpenSearch(true);
+    const handleCloseSearch = () => {
+        setOpenSearch(false);
+    };
+
+    // Post Form Body
     const [formItems, SetFormItems] = useState({
         userId: '',
         title: '',
         body: ''
     });
+
+    const [search, SetSearch] = useState("");
 
     const clearForm = () => {
         SetFormItems({
@@ -35,8 +52,36 @@ const Header = () => {
 
     const handleAddForm = (e) => {
         e.preventDefault();
-        console.log(`User Id: ${formItems.userId} - Title: ${formItems.title} - Body: ${formItems.body}`);
+        //console.log(`User Id: ${formItems.userId} - Title: ${formItems.title} - Body: ${formItems.body}`);
+
+        fetch('https://jsonplaceholder.typicode.com/posts', {
+            method: 'POST',
+            body: JSON.stringify({
+              title: formItems.title,
+              body: formItems.body,
+              userId: formItems.userId,
+            }),
+            headers: {
+              'Content-type': 'application/json; charset=UTF-8',
+            },
+          })
+            .then((response) => response.json())
+            .then((json) => {
+                let temp = [...posts];
+                temp.unshift(json);
+                SetPosts(temp);
+            });
     }
+
+    const SearchPost = (e) => {
+        if(e.key === 'Enter'){
+            handleOpenSearch();
+        }
+    }
+
+    const filteredPosts = posts.filter(post =>
+        post.title.toLowerCase().includes(search.toLowerCase())
+    );
 
     return(
         <Box sx={styles.header}>
@@ -45,6 +90,10 @@ const Header = () => {
                 <Typography component="p" sx={styles.headerItem2} onClick={handleOpen}>Add Post</Typography>
                 <TextField id="filled-basic" label="Search" variant="filled" 
                     sx={styles.headerForm}
+                    onKeyDown={SearchPost}
+                    onChange={(e) => {
+                        SetSearch(e.target.value);
+                    }}
                     InputLabelProps={{
                         sx: {
                             top: ['-7px','-8px','-7px' ,'-4px','-3px'],
@@ -53,10 +102,13 @@ const Header = () => {
                     }}
                     InputProps={{
                         endAdornment: 
-                            <InputAdornment position="end">
+                            <InputAdornment position="end" sx={{
+                                marginTop:["-13%","-6%","-7%","-2%","-2%"]
+                            }}>
                                 <IconButton
                                 aria-label="toggle password visibility"
                                 edge="end"
+
                                 >
                                     <SearchIcon/>
                                 </IconButton>
@@ -111,6 +163,23 @@ const Header = () => {
                             <Button variant="outlined" type="submit" sx={{marginLeft: '2%'}}>Submit</Button>
                         </Box>
                     </Box>
+                </Box>
+            </Modal>
+
+            <Modal
+                open={openSearch}
+                onClose={handleCloseSearch}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={styles.modal}>
+                    {filteredPosts.map((x, index) => {
+                        return (
+                            <div key={index}>
+                                <p>{x.title}</p>
+                            </div>
+                        )
+                    })}
                 </Box>
             </Modal>
         </Box>
