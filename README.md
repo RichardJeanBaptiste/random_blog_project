@@ -1,8 +1,25 @@
-# React + Vite
+# Random Blog App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## This Project is an example MERN Application utilizing the JSONPlaceholder API
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## To Run This Application Locally 
+
+  - Requirements
+      - NodeJS @ v20.16.0
+      - Vite -  (Install here): https://vitejs.dev/guide/
+
+  - Clone Repo on you machine
+  - Cd into Project
+  - Run npm install
+  - Run npm run dev to start application
+      - If every goes well you should see:
+   <img width="725" alt="Screen Shot 2024-08-06 at 9 00 06 PM" src="https://github.com/user-attachments/assets/0b2add04-4c5d-483f-bcbc-9b2e88a065aa">
+
+  - To Edit this Application edit /src folder
+
+
+### Live version of this application : https://random-blog-project.vercel.app/
+
+        
+
