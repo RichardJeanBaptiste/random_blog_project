@@ -6,6 +6,8 @@ import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Modal from '@mui/material/Modal';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const Post = (props) => {
 
@@ -15,6 +17,14 @@ const Post = (props) => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    
+    const DeletePost = () => {
+        fetch('https://jsonplaceholder.typicode.com/posts/1', {
+            method: 'DELETE',
+        }).then((response) => {
+            console.log(response.json());
+        });
+    }
 
     return (
         <Box>
@@ -39,6 +49,9 @@ const Post = (props) => {
                 <Box sx={styles.modal}>
                     <Typography sx={{color: 'black'}}>{`Title: ${props.title}`}</Typography>
                     <Typography sx={{color: 'black'}}>{`Body: ${props.body}`}</Typography>
+                    <IconButton aria-label="delete" onClick={DeletePost} sx={{ position: 'absolute', bottom: '3%', right: '4%'}}>
+                        <DeleteIcon />
+                    </IconButton>
                 </Box>
             </Modal>
         </Box>

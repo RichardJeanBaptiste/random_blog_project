@@ -33,6 +33,15 @@ const Header = () => {
         setOpenSearch(false);
     };
 
+    // Search Response Modal
+    const [openSearchResult, SetOpenSearchResult] = useState(false);
+    const handleOpenSearchResult = () => SetOpenSearchResult(true);
+    const handleCloseSearchResult = () => {
+        SetOpenSearchResult(false);
+    }
+    const [searchTitle, SetSearchTitle] = useState("");
+    const [searchBody, SetSearchBody] = useState(""); 
+
     // Post Form Body
     const [formItems, SetFormItems] = useState({
         userId: '',
@@ -52,8 +61,7 @@ const Header = () => {
 
     const handleAddForm = (e) => {
         e.preventDefault();
-        //console.log(`User Id: ${formItems.userId} - Title: ${formItems.title} - Body: ${formItems.body}`);
-
+    
         fetch('https://jsonplaceholder.typicode.com/posts', {
             method: 'POST',
             body: JSON.stringify({
@@ -83,12 +91,18 @@ const Header = () => {
         post.title.toLowerCase().includes(search.toLowerCase())
     );
 
+    const OpenSearchResult = (title, body) => {
+        handleCloseSearch();
+        SetSearchTitle(title);
+        SetSearchBody(body);
+        handleOpenSearchResult();
+    }
+
     return(
         <Box sx={styles.header}>
             <Box sx={styles.headerItems}>
-                <Typography component="p" sx={styles.headerItem1}>Home</Typography>
                 <Typography component="p" sx={styles.headerItem2} onClick={handleOpen}>Add Post</Typography>
-                <TextField id="filled-basic" label="Search" variant="filled" 
+                <TextField id="filled-basic" label="Search" variant="standard" 
                     sx={styles.headerForm}
                     onKeyDown={SearchPost}
                     onChange={(e) => {
@@ -103,20 +117,21 @@ const Header = () => {
                     InputProps={{
                         endAdornment: 
                             <InputAdornment position="end" sx={{
-                                marginTop:["-13%","-6%","-7%","-2%","-2%"]
+                                marginTop:["-13%","-9%","-7%","-2%","-2%"],
+                                marginLeft: ["-20%","-17%","-10%","-10%","-10%"]
                             }}>
                                 <IconButton
                                 aria-label="toggle password visibility"
                                 edge="end"
-
                                 >
                                     <SearchIcon/>
                                 </IconButton>
-                        </InputAdornment>
+                            </InputAdornment>
                     }}
                 />
             </Box>
-
+            
+            {/*** Add Form Modal */}
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -166,22 +181,39 @@ const Header = () => {
                 </Box>
             </Modal>
 
+            {/** Search Modal */}
             <Modal
                 open={openSearch}
                 onClose={handleCloseSearch}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={styles.modal}>
+                <Box sx={styles.modal2}>
                     {filteredPosts.map((x, index) => {
                         return (
-                            <div key={index}>
-                                <p>{x.title}</p>
-                            </div>
+                            <Box component="div" key={index} sx={{ paddingBottom: '2%'}}>
+                                <Typography sx={{ cursor: 'pointer'}} onClick={() => OpenSearchResult(x.title, x.body)}>Title: <Box component="span" sx={{ textDecoration: 'underline'}}>{x.title}</Box></Typography>
+                            </Box>
                         )
                     })}
                 </Box>
             </Modal>
+            
+
+            {/** Open Search Results Modal */}
+            <Modal
+                open={openSearchResult}
+                onClose={handleCloseSearchResult}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={styles.modal}>
+                    <Typography component="p" sx={{ marginTop: '2%'}} >{searchTitle}</Typography>
+                    <Typography component="p" sx={{ marginTop: '2%'}} >{searchBody}</Typography>
+                </Box>
+            </Modal>
+
+
         </Box>
     )
 }
@@ -204,10 +236,10 @@ const useStyles = (theme) => ({
         marginTop: '.6%'
     },
     headerForm: {
-        borderRadius: '20px', 
+        borderRadius: '2px', 
         backgroundColor: 'white',
-        width: ['35%', '35%', '18%','21%','20%'],
-        height: '77%',
+        width: ['55%', '35%', '40%','39%','20%'],
+        height: '100%',
         marginTop: '-0.4%',
         marginLeft: '2%'
     },
@@ -216,8 +248,9 @@ const useStyles = (theme) => ({
         marginTop: '.5%'
     },
     headerItem2: {
-        marginLeft: ['3%','1%','1%','1%','1%'], 
-        marginTop: '.5%'
+        marginLeft: ['24%','49%','49%','53%','67%'], 
+        marginTop: '.5%',
+        cursor: 'pointer'
     },
     modal: {
         position: 'absolute',
@@ -226,6 +259,20 @@ const useStyles = (theme) => ({
         transform: 'translate(-50%, -50%)',
         width: ['60%','44%',400, 400, 400],
         height: ['80%','82%','80%','85%','85%'],
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+        p: 4,
+        color: 'black'
+    },
+    modal2: {
+        position: 'absolute',
+        top: '52%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: ['60%','44%',400, 400, 400],
+        height: ['75%','75%','75%','80%','80%'],
+        overflowY: 'scroll',
         bgcolor: 'background.paper',
         border: '2px solid #000',
         boxShadow: 24,

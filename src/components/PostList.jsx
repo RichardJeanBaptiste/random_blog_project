@@ -32,6 +32,18 @@ const PostList = () => {
           setCurrentPage(newPage);
         }
     };
+
+    const handlePageInput = (e) => {
+        if(e.key === 'Enter'){
+            const newPage = parseInt(e.target.value, 10);
+            if (newPage >= 1 && newPage <= totalPages) {
+            setCurrentPage(newPage);
+            }
+
+            e.target.value = "";
+        }
+        
+    }
     
 
     return (
@@ -53,7 +65,9 @@ const PostList = () => {
                         min={1}
                         max={totalPages}
                         placeholder={currentPage}
+                        onKeyDown={handlePageInput}
                         onChange={handleInputChange}
+                        sx={{ width : '4%' }}
                     />
                     <Button
                         variant="contained"
