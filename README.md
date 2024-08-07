@@ -7,7 +7,7 @@
 
   - Requirements
       - NodeJS @ v20.16.0
-      - Vite -  (Install here): https://vitejs.dev/guide/
+      - Vite : https://vitejs.dev/guide/
 
   - Clone Repo on you machine
   - Cd into Project
